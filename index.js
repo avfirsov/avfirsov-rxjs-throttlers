@@ -7,7 +7,7 @@ const SVG_WIDTH = '600';
 const SVG_HEIGHT = '50';
 
 const ticker$ = rx.interval(1000);
-const getX = (time: number) => (time * (parseInt(LINE_WIDTH) + parseInt(SPACE_BETWEEN))) % parseInt(SVG_WIDTH);
+const getX = (time) => (time * (parseInt(LINE_WIDTH) + parseInt(SPACE_BETWEEN))) % parseInt(SVG_WIDTH);
 const xCoord$ = ticker$.pipe(op.map((time) => getX(time)));
 const mousemove$ = rx.fromEvent(document, 'mousemove');
 
@@ -36,14 +36,12 @@ const obs = [
     color: 'OrangeRed',
   },
   {
-    stream: mousemove$
-      .pipe(op.throttleTime(1000, rx.asyncScheduler, { leading: false, trailing: false })),
+    stream: mousemove$.pipe(op.throttleTime(1000, rx.asyncScheduler, { leading: false, trailing: false })),
     label: 'throttleTime(1000, rx.asyncScheduler, \n{ leading: false, trailing: false })',
     color: 'DarkSlateGrey',
   },
   {
-    stream: mousemove$
-      .pipe(op.sampleTime(1000)),
+    stream: mousemove$.pipe(op.sampleTime(1000)),
     label: 'sampleTime(1000)',
     color: 'DarkSlateGrey',
   },
@@ -59,7 +57,7 @@ obs.forEach(({ stream, label, color }) => {
   stream.pipe(op.withLatestFrom(xCoord$)).subscribe(([_, x]) => drawLine({ svg, x, color }));
 });
 
-function appendSVGWithLabel(label: string) {
+function appendSVGWithLabel(label) {
   const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
   svg.setAttribute('width', SVG_WIDTH);
   svg.setAttribute('height', SVG_HEIGHT);
@@ -78,7 +76,7 @@ function appendSVGWithLabel(label: string) {
   return { svg };
 }
 
-function drawLine({ svg, x, color }: { svg: SVGSVGElement; x: number; color: string }) {
+function drawLine({ svg, x, color }) {
   const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
   rect.setAttribute('width', LINE_WIDTH);
   rect.setAttribute('height', SVG_HEIGHT);

@@ -11,9 +11,6 @@
   ],
   "author": "afirsov",
   "license": "MIT",
-  "devDependencies": {
-    "typescript": "^3.9.7"
-  },
   "dependencies": {
     "rxjs": "^6.6.0"
   }
