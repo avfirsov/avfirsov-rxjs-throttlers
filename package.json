@@ -1,0 +1,20 @@
+{
+  "name": "rxjs-throttlers",
+  "version": "1.0.0",
+  "description": "a visual demo of rxjs rate management operators",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "rxjs"
+  ],
+  "author": "afirsov",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^3.9.7"
+  },
+  "dependencies": {
+    "rxjs": "^6.6.0"
+  }
+}
