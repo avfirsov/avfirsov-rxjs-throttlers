@@ -4,7 +4,8 @@
   "description": "a visual demo of rxjs rate management operators",
   "main": "index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "parcel build index.html"
   },
   "keywords": [
     "rxjs"
@@ -13,5 +14,8 @@
   "license": "MIT",
   "dependencies": {
     "rxjs": "^6.6.0"
+  },
+  "devDependencies": {
+    "parcel": "^1.12.4"
   }
 }
