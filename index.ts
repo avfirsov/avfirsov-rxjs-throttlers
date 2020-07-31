@@ -49,5 +49,7 @@ const throttlers = [
 
 throttlers.forEach(({ stream, label, color }) => {
   const { svg } = appendSVGWithLabel(label);
-  stream.pipe(op.withLatestFrom(xCoord$)).subscribe(([_, x]) => drawLine({ svg, x, color }));
+  //these two lined gives same result 
+  xCoord$.pipe(op.sample(stream)).subscribe(x => drawLine({ svg, x, color }))
+  // stream.pipe(op.withLatestFrom(xCoord$, (event, x) => x)).subscribe((x) => drawLine({ svg, x, color }));
 });
