@@ -17,13 +17,18 @@ xCoord$
 const throttlers = [
   {
     stream: mousemove$.pipe(op.throttleTime(1000)),
-    label: 'throttleTime(1000)',
+    label: 'throttleTime(1000) \n(by default { leading: true, trailing: false })',
     color: 'dodgerblue',
   },
   {
     stream: mousemove$.pipe(op.throttleTime(1000, rx.asyncScheduler, { leading: false, trailing: true })),
     label: 'throttleTime(1000, rx.asyncScheduler, \n{ leading: false, trailing: true })',
     color: 'MediumVioletRed',
+  },
+  {
+    stream: mousemove$.pipe(op.auditTime(1000)),
+    label: 'auditTime(1000)',
+    color: 'SpringGreen',
   },
   {
     stream: mousemove$.pipe(op.throttleTime(1000, rx.asyncScheduler, { leading: true, trailing: true })),
