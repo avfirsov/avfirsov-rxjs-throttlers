@@ -6,8 +6,10 @@ const SPACE_BETWEEN = '10';
 const SVG_WIDTH = '600';
 const SVG_HEIGHT = '50';
 
+const getX = (time: number) => (time * (parseInt(LINE_WIDTH) + parseInt(SPACE_BETWEEN))) % parseInt(SVG_WIDTH);
+const flushSVGs = () => document.querySelectorAll('svg').forEach((svg) => (svg.innerHTML = ''));
+
 const ticker$ = rx.interval(1000);
-const getX = (time) => (time * (parseInt(LINE_WIDTH) + parseInt(SPACE_BETWEEN))) % parseInt(SVG_WIDTH);
 const xCoord$ = ticker$.pipe(op.map((time) => getX(time)));
 const mousemove$ = rx.fromEvent(document, 'mousemove');
 
@@ -17,9 +19,9 @@ xCoord$
     op.map(([a, b]) => b - a),
     op.filter((dif) => dif < 0)
   )
-  .subscribe((_) => document.querySelectorAll('svg').forEach((svg) => (svg.innerHTML = '')));
+  .subscribe(flushSVGs);
 
-const obs = [
+const throttlers = [
   {
     stream: mousemove$.pipe(op.throttleTime(1000)),
     label: 'throttleTime(1000)',
@@ -52,12 +54,12 @@ const obs = [
   },
 ];
 
-obs.forEach(({ stream, label, color }) => {
+throttlers.forEach(({ stream, label, color }) => {
   const { svg } = appendSVGWithLabel(label);
   stream.pipe(op.withLatestFrom(xCoord$)).subscribe(([_, x]) => drawLine({ svg, x, color }));
 });
 
-function appendSVGWithLabel(label) {
+function appendSVGWithLabel(label: string) {
   const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
   svg.setAttribute('width', SVG_WIDTH);
   svg.setAttribute('height', SVG_HEIGHT);
@@ -73,7 +75,7 @@ function appendSVGWithLabel(label) {
   wrapper.append(labelDiv, svg);
   document.body.append(wrapper);
 
-  return { svg };
+  return { svg, wrapper, label };
 }
 
 function drawLine({ svg, x, color }) {
